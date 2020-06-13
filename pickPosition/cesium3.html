@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="../Cesium/Cesium.js"></script>
+    <style>
+        @import url(../Cesium/Widgets/widgets.css);
+
+        html,
+        body,
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script>
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+        var viewer = new Cesium.Viewer('cesiumContainer');
+        viewer.entities.add({
+            id: 'id',
+            position: Cesium.Cartesian3.fromDegrees(103.0, 40.0),
+            name: 'Red ellipse on surface with outline',
+            ellipse: {
+                semiMinorAxis: 250000.0,
+                semiMajorAxis: 400000.0,
+                height: 200000.0,
+                extrudedHeight: 400000.0,
+                fill: true,
+                material: Cesium.Color.RED.withAlpha(0.5),
+                outline: true, //必须设置height，否则ouline无法显示
+                outlineColor: Cesium.Color.BLUE.withAlpha(0.5),
+                outlineWidth: 10.0//windows系统下不能设置固定为1
+            }
+        });
+        var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        handler.setInputAction(function (movement) {
+            var pick = viewer.scene.pick(movement.position);
+            if (Cesium.defined(pick) && (pick.id.id === 'id')) {
+                console.log(pick.id.id)
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    </script>
+</body>
+
+</html>
