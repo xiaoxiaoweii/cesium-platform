@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+    //浮空的绿色圆形
+    var greenCircle = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(-111.0, 40.0, 150000.0),
+      name: 'Green circle at height',
+      ellipse: {
+        semiMinorAxis: 300000.0,
+        semiMajorAxis: 300000.0,
+        height: 200000.0, //浮空
+        material: Cesium.Color.GREEN
+      }
+    });
+    //红色椭圆形，位于地表，带轮廓
+    var redEllipse = viewer.entities.add({
+      //不带高度
+      position: Cesium.Cartesian3.fromDegrees(-103.0, 40.0),
+      name: 'Red ellipse on surface with outline',
+      ellipse: {
+        semiMinorAxis: 250000.0,
+        semiMajorAxis: 400000.0,
+        material: Cesium.Color.RED.withAlpha(0.5),
+        outline: true,
+        outlineColor: Cesium.Color.RED
+      }
+    });
+    //蓝色椭圆柱，旋转了角度
+    var blueEllipse = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 100000.0),
+      name: 'Blue translucent, rotated, and extruded ellipse',
+      ellipse: {
+        semiMinorAxis: 150000.0,
+        semiMajorAxis: 300000.0,
+        extrudedHeight: 200000.0, //拉伸
+        rotation: Cesium.Math.toRadians(45), //旋转
+        material: Cesium.Color.BLUE.withAlpha(0.7),
+        outline: true
+      }
+    });
+
+    viewer.zoomTo(viewer.entities);
+  </script>
+</body>
+
+</html>

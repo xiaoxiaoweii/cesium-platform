@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+
+    var blueEllipsoid = viewer.entities.add({
+      name: 'Blue ellipsoid',
+      position: Cesium.Cartesian3.fromDegrees(-114.0, 40.0, 300000.0),
+      ellipsoid: {
+        //可以指定三个轴的半径
+        radii: new Cesium.Cartesian3(200000.0, 200000.0, 300000.0),
+        material: Cesium.Color.BLUE
+      }
+    });
+
+    var redSphere = viewer.entities.add({
+      name: 'Red sphere with black outline',
+      position: Cesium.Cartesian3.fromDegrees(-107.0, 40.0, 300000.0),
+      ellipsoid: {
+        //正球体
+        radii: new Cesium.Cartesian3(300000.0, 300000.0, 300000.0),
+        material: Cesium.Color.RED,
+        outline: true,
+        outlineColor: Cesium.Color.BLACK
+      }
+    });
+
+    var outlineOnly = viewer.entities.add({
+      name: 'Yellow ellipsoid outline',
+      position: Cesium.Cartesian3.fromDegrees(-100.0, 40.0, 300000.0),
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(200000.0, 200000.0, 300000.0),
+        fill: false,
+        outline: true,
+        outlineColor: Cesium.Color.YELLOW,
+        slicePartitions: 24, //横向切割线
+        stackPartitions: 36 //纵向切割线
+      }
+    });
+  </script>
+</body>
+
+</html>

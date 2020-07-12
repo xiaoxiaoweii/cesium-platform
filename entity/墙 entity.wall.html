@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+
+    //东西方向的横墙
+    var redWall = viewer.entities.add({
+      name: 'Red wall at height',
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [-115.0, 44.0, 200000.0, //坐标点
+            -90.0, 44.0, 200000.0
+          ]
+        ),
+        minimumHeights: [100000.0, 100000.0], //按坐标点的最小高度数组
+        material: Cesium.Color.RED
+      }
+    });
+    //四边围墙
+    var greenWall = viewer.entities.add({
+      name: 'Green wall from surface with outline',
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [-107.0, 43.0, 100000.0,
+            -97.0, 43.0, 100000.0,
+            -97.0, 40.0, 100000.0,
+            -107.0, 40.0, 100000.0,
+            -107.0, 43.0, 100000.0
+          ]),
+        material: Cesium.Color.GREEN,
+        outline: true,
+        outlineColor: Cesium.Color.BLACK
+      }
+    });
+    //曲折的墙
+    var blueWall = viewer.entities.add({
+      name: 'Blue wall with sawtooth heights and outline',
+      wall: {
+        //坐标点，不指定高度
+        positions: Cesium.Cartesian3.fromDegreesArray(
+          [-115.0, 50.0,
+            -112.5, 50.0,
+            -110.0, 50.0,
+            -107.5, 50.0,
+            -105.0, 50.0,
+            -102.5, 50.0,
+            -100.0, 50.0,
+            -97.5, 50.0,
+            -95.0, 50.0,
+            -92.5, 50.0,
+            -90.0, 50.0
+          ]),
+        maximumHeights: [ //上高
+          100000, 200000, 100000, 200000, 100000, 200000,
+          100000, 200000, 100000, 200000, 100000
+        ],
+        minimumHeights: [ //下高
+          0, 100000, 0, 100000, 0, 100000, 0, 100000, 0,
+          100000, 0
+        ],
+        material: Cesium.Color.BLUE,
+        outline: true,
+        outlineColor: Cesium.Color.BLACK
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+
+    var entity = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(-103.0, 40.0),
+      ellipse: {
+        semiMinorAxis: 250000.0,
+        semiMajorAxis: 400000.0,
+        material: Cesium.Color.BLUE.withAlpha(0.5)
+      }
+    });
+    viewer.zoomTo(viewer.entities);
+    var ellipse = entity.ellipse;
+    // 可以加载图片
+    // ellipse.material = '//cesiumjs.org/tutorials/images/cats.jpg';
+    /* 网格材质 */
+    /* ellipse.material = new Cesium.CheckerboardMaterialProperty({
+      evenColor: Cesium.Color.WHITE,
+      oddColor: Cesium.Color.BLACK,
+      repeat: new Cesium.Cartesian2(4, 4)
+    }); */
+    // 条纹材质
+    /* ellipse.material = new Cesium.StripeMaterialProperty({
+      evenColor: Cesium.Color.WHITE,
+      oddColor: Cesium.Color.BLACK,
+      repeat: 32
+    }); */
+    // 网格材质
+    ellipse.material = new Cesium.GridMaterialProperty({
+      color: Cesium.Color.YELLOW,
+      cellAlpha: 0.2,
+      lineCount: new Cesium.Cartesian2(8, 8),
+      lineThickness: new Cesium.Cartesian2(2.0, 2.0)
+    });
+  </script>
+</body>
+
+</html>
