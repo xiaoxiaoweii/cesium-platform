@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="../Cesium/Cesium.js"></script>
+    <style>
+        @import url(../Cesium/Widgets/widgets.css);
+
+        html,
+        body,
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script>
+        Cesium.Ion.defaultAccessToken =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+            scene3DOnly: true,
+            selectionIndicator: false,
+            baseLayerPicker: false
+        });
+        // 删除默认的影像图层
+        viewer.imageryLayers.remove(viewer.imageryLayers.get(0));
+
+        // 增加谷歌影像底图
+        viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+            url: 'http://www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}',
+            tilingScheme: new Cesium.WebMercatorTilingScheme()
+        }));
+        // Load Cesium World Terrain
+        viewer.terrainProvider = Cesium.createWorldTerrain({
+            requestWaterMask: true, // required for water effects
+            requestVertexNormals: true // required for terrain lighting
+        });
+        // 开启全球光照
+        viewer.scene.globe.enableLighting = true;
+        
+    </script>
+</body>
+
+</html>

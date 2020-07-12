@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+    var scene = viewer.scene;
+
+    // Create extruded rectangle
+    var rectangle = Cesium.Rectangle.fromDegrees(-110.0, 38.0, -107.0, 40.0);
+    var height = 700000.0;
+    var extrudedHeight = 1000000.0;
+    var rotation = Cesium.Math.toRadians(45.0);
+    var extrudedRectangle = new Cesium.GeometryInstance({
+      geometry: new Cesium.RectangleGeometry({
+        rectangle: rectangle,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+        height: height,
+        rotation: rotation,
+        extrudedHeight: extrudedHeight
+      }),
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+          alpha: 1.0
+        }))
+      }
+    });
+
+    // Create extruded ellipse
+    var center = Cesium.Cartesian3.fromDegrees(-110.0, 35.0);
+    var semiMinorAxis = 100000.0;
+    var semiMajorAxis = 200000.0;
+    var rotation = Cesium.Math.toRadians(-40.0);
+    var height = 300000.0;
+    var extrudedHeight = 700000.0;
+    var extrudedEllipse = new Cesium.GeometryInstance({
+      geometry: new Cesium.EllipseGeometry({
+        center: center,
+        semiMinorAxis: semiMinorAxis,
+        semiMajorAxis: semiMajorAxis,
+        rotation: rotation,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+        height: height,
+        extrudedHeight: extrudedHeight
+      }),
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+          alpha: 1.0
+        }))
+      }
+    });
+
+    // Create extruded polygon
+    var polygonHierarchy = {
+      positions: Cesium.Cartesian3.fromDegreesArray([
+        -113.0, 30.0,
+        -110.0, 30.0,
+        -110.0, 33.0,
+        -111.5, 31.0,
+        -113.0, 33.0
+      ])
+    };
+    var extrudedHeight = 300000.0;
+    var extrudedPolygon = new Cesium.GeometryInstance({
+      geometry: new Cesium.PolygonGeometry({
+        polygonHierarchy: polygonHierarchy,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+        extrudedHeight: extrudedHeight
+      }),
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+          alpha: 1.0
+        }))
+      }
+    });
+
+    // cylinder
+    var length = 400000.0;
+    var topRadius = 0.0;
+    var bottomRadius = 200000.0;
+    var modelMatrix = Cesium.Matrix4.multiplyByTranslation(Cesium.Transforms.eastNorthUpToFixedFrame(
+      Cesium.Cartesian3.fromDegrees(-70.0, 40.0)), new Cesium.Cartesian3(0.0, 0.0, 200000.0), new Cesium.Matrix4());
+    var cylinderInstance = new Cesium.GeometryInstance({
+      geometry: new Cesium.CylinderGeometry({
+        length: length,
+        topRadius: topRadius,
+        bottomRadius: bottomRadius,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+      }),
+      modelMatrix: modelMatrix,
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+          alpha: 1.0
+        }))
+      }
+    });
+
+    scene.primitives.add(new Cesium.Primitive({
+      geometryInstances: [extrudedPolygon, extrudedRectangle, extrudedEllipse, cylinderInstance],
+      appearance: new Cesium.PerInstanceColorAppearance({
+        translucent: false,
+        closed: true
+      })
+    }));
+  </script>
+</body>
+
+</html>

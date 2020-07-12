@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+    var viewer = new Cesium.Viewer('cesiumContainer');
+    var scene = viewer.scene;
+
+    var circleInstance = new Cesium.GeometryInstance({
+      geometry: new Cesium.CircleGeometry({
+        center: Cesium.Cartesian3.fromDegrees(-95.0, 43.0),
+        radius: 250000.0,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+      }),
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(new Cesium.Color(1.0, 0.0, 0.0, 0.5)),
+        show: new Cesium.ShowGeometryInstanceAttribute(true) //显示或者隐藏
+      },
+      id: 'circle'
+    });
+    var primitive = new Cesium.Primitive({
+      geometryInstances: circleInstance,
+      appearance: new Cesium.PerInstanceColorAppearance({
+        translucent: false,
+        closed: true
+      })
+    });
+    scene.primitives.add(primitive);
+
+    //定期修改颜色
+    setInterval(function () {
+      var attributes = primitive.getGeometryInstanceAttributes('circle'); //获取某个实例的属性集
+      attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.fromRandom({
+        alpha: 1.0
+      }));
+    }, 2000);
+  </script>
+</body>
+
+</html>
