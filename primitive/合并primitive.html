@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Cesium/Cesium.js"></script>
+  <style>
+    @import url(../Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGIzZTI2NC01NzBkLTRkODctOGY1MS01OThiODJlNzVjZDUiLCJpZCI6MjM1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODM0Njc3MTN9.gW3gdlQSAnrxOoD7cQMn45yvwWjdR74yJHayspaX4_Y';
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+    var scene = viewer.scene;
+
+    //将多个几何实例结合成一个primitive
+    var rectangleInstance = new Cesium.GeometryInstance({
+      geometry: new Cesium.RectangleGeometry({
+        rectangle: Cesium.Rectangle.fromDegrees(-140.0, 30.0, -100.0, 40.0),
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+      }),
+      id: 'rectangle',
+      attributes: {
+        color: new Cesium.ColorGeometryInstanceAttribute(0.0, 1.0, 1.0, 0.5)
+      }
+    });
+    var ellipsoidInstance = new Cesium.GeometryInstance({
+      geometry: new Cesium.EllipsoidGeometry({
+        radii: new Cesium.Cartesian3(500000.0, 500000.0, 1000000.0),
+        vertexFormat: Cesium.VertexFormat.POSITION_AND_NORMAL
+      }),
+      modelMatrix: Cesium.Matrix4.multiplyByTranslation(Cesium.Transforms.eastNorthUpToFixedFrame(
+          Cesium.Cartesian3.fromDegrees(-95.59777, 40.03883)), new Cesium.Cartesian3(0.0, 0.0, 500000.0),
+        new Cesium.Matrix4()),
+      id: 'ellipsoid',
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.AQUA)
+      }
+    });
+    scene.primitives.add(new Cesium.Primitive({
+      geometryInstances: [rectangleInstance, ellipsoidInstance],
+      appearance: new Cesium.PerInstanceColorAppearance()
+    }));
+    console.log()
+  </script>
+</body>
+
+</html>
